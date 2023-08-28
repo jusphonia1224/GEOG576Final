@@ -244,6 +244,7 @@
              const eventsTemplate = {
                 "title": "{event_name}",
                 "content": "<b>Trip:</b> {trip_name}<br> \
+                            <b>Venue:</b> {event_venue_name}<br> \
                             <b>Type:</b> {events_type}<br> \
                             <b>From:</b> {datetime_from}<br> \
                             <b>To:</b> {datetime_to}<br> \
@@ -296,7 +297,7 @@
                     ]
                 }, 
                 //definitionExpression: "transportation_type = 'Flight' ",
-                outFields: ["event_name", "trip_name", "events_type", "datetime_from", "datetime_to", "website", "remarks"],
+                outFields: ["event_name", "trip_name", "events_type", "event_venue_name", "datetime_from", "datetime_to", "website", "remarks"],
                 popupTemplate: eventsTemplate
             });
 
