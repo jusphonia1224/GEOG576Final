@@ -305,6 +305,52 @@
 
             map.add(eventsLayer);
 
+            // ----- Settings for layer - Sightseeing related -----
+             // Defining popup properties
+             const sightseeingTemplate = {
+                "title": "{sightseeing_name}",
+                "content": "<b>Trip:</b> {trip_name}<br> \
+                            <b>Type:</b> {sightseeing_type}<br> \
+                            <b>From:</b> {datetime_from}<br> \
+                            <b>To:</b> {datetime_to}<br> \
+                            <b>Website:</b> {website}<br> \
+                            <b>Remarks:</b> {remarks}<br> "
+            }
+ 
+            const sightseeingLayer = new FeatureLayer({
+                url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_9c12ea04513f496dbbe266390eb086df_results/FeatureServer",
+                renderer: {
+                    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                    field: "sightseeing_type",  // contains values referenced in uniqueValueInfos
+                    uniqueValueInfos: [
+                        {
+                            value: "Museum", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "logo/museum.png",
+                                "width": "24px",
+                                "height": "24px"
+                            }
+                        },
+                        {
+                            value: "sightseeing_type_other", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "logo/sightseeing.png",
+                                "width": "24px",
+                                "height": "24px"
+                            }
+                        }
+                    ]
+                }, 
+                //definitionExpression: "transportation_type = 'Flight' ",
+                outFields: ["sightseeing_name", "trip_name", "sightseeing_type", "datetime_from", "datetime_to", "website", "remarks"],
+                popupTemplate: sightseeingTemplate
+            });
+
+            sightseeingLayer_titleForLegend = sightseeingLayer.title = sightseeingLayer.name = 'Sightseeing';
+
+            map.add(sightseeingLayer);
 
             // Add the locate widget to the top left corner of the view
             const locateBtn = new Locate({
