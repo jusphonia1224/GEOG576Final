@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+ <html>
+  <head>
+    <!-- meta for browser allow mobile design -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    
+    <title>TRAVEL LOG</title>
+
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 95%;
+            width: 100%;
+        }
+
+        h1{
+            margin-left: 50px;
+        }
+
+        .addRecordBtn {
+            position: absolute;
+            z-index: 10;
+            top: 25px;
+            right: 50px;
+            background-color: #0079c1;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 20px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .addRecordBtn:hover {
+            background-color: #005a87;
+        }
+
+    </style>
+
+    <!-- import css and esri.js lib -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.26/"></script>
+
+    <!-- loading modules -->
+    <script>
+        require([
+            "esri/config", 
+            "esri/Map", 
+            "esri/views/MapView", 
+            "esri/widgets/Locate", 
+            "esri/widgets/Search", 
+            "esri/layers/FeatureLayer",
+            "esri/Graphic",
+            "esri/layers/GraphicsLayer",
+            "esri/widgets/Legend",
+            "esri/widgets/LayerList",
+            "esri/widgets/Expand"
+        ], (esriConfig, Map, MapView, Locate, Search, FeatureLayer, Graphic, GraphicsLayer, Legend, LayerList, Expand) => {
+            esriConfig.apiKey = "AAPK1bafb1fd1b984000a2a5ab965ed0cf111GDugMmnipDNIQH9yaN93addT3iTZzAKwGLSLBZvZJBkFTaRPkJjvEi2gCoqyJml";
+
+            const map = new Map({
+                basemap: "arcgis-topographic"
+            });
+
+            const view = new MapView({
+                container: "viewDiv", 
+                center: [114.1501, 22.2908], // Longitude, latitude of Hong Kong
+                zoom: 5, // Zoom level
+                map: map // References the map object
+            });
+
+            //const graphicsLayer = new GraphicsLayer();
+            //map.add(graphicsLayer);
+
+            // Defining popup properties
+            const popupTemplate = {
+                "title": "{Name}",
+                "content": "<b>Type:</b> {Type} - {Subtype1}{Subtype2}{Subtype3}{Subtype4}<br> \
+                            <b>Location:</b> {Address}<br> \
+                            <b>Description:</b> {Description}<br> \
+                            <b>Record Date:</b> {RecordDate}<br> \
+                            <b>Reference:</b> {Reference}<br> \
+                            <b>Remarks:</b> {Remarks}<br> "
+            }
+
+            // ----- Settings for layer - Agency related -----
+            const transportationLayer = new FeatureLayer({
+                url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_a1b96a7fac07465faf3ce60fb3fa52b0_results/FeatureServer",
+                renderer: {
+                    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                    field: "transportation_type",  // contains values referenced in uniqueValueInfos
+                    uniqueValueInfos: [
+                        {
+                            value: "Flight", 
+                            symbol: {
+                                "type": "simple-line",
+                                //"url": "https://jusphonia1224.github.io/TravelLog/logo/icons8-plane-24.png",
+                                "color": "black",
+                                "width": "2px",
+                                "height": "2px",
+                                marker: { // autocasts from LineSymbolMarker
+                                    //"style": "arrow",
+                                    url: "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
+                                    placement: "begin-end"
+                                }
+                            }
+                        }
+                    ]
+                }, 
+                //definitionExpression: "transportation_type = 'Flight' ",
+                outFields: ["route_number"],
+                popupTemplate: popupTemplate
+            });
+
+            transportationLayer_titleForLegend = transportationLayer.title = transportationLayer.name = 'Transportation';
+
+            map.add(transportationLayer);
+
+            // Add the locate widget to the top left corner of the view
+            const locateBtn = new Locate({
+                view: view
+            });
+
+            view.ui.add(locateBtn, {
+                position: "top-left"
+            });
+
+            const searchWidget = new Search({
+                view: view
+            });
+
+            // Adds the search widget below other elements in the top left corner of the view
+            view.ui.add(searchWidget, {
+                position: "top-right",
+                index: 2
+            });
+
+            // Add Legend Widget
+            let legend = new Legend({
+                view: view,
+                container: document.createElement("div")
+            });
+
+            const legendExpand = new Expand({
+                view: view,
+                content: legend
+            });
+
+            view.ui.add(legendExpand, "bottom-left");
+
+            // Add Layer List Widget
+            let layerList = new LayerList({
+                view: view,
+                container: document.createElement("div")
+            });
+
+            const layerListExpand = new Expand({
+                view: view,
+                content: layerList
+            });
+                        
+            view.ui.add(layerListExpand, "bottom-left");
+        });
+    </script>
+
+  </head>
+  <body>
+    <header id="header">
+        <div id="header_title">
+            <h1 style="color: green">TRAVEL LOG</h1>
+        </div>
+        <a href="https://arcg.is/eLKCG"target="_blank" class="addRecordBtn">Add Record</a>
+    </header>
+    <div id="viewDiv"></div>
+    <footer style="text-align:center"> University of Wisconsin - Madison - GEOG576 Final Project - By Jusphonia Ho</footer>
+  </body>
+</html>
+

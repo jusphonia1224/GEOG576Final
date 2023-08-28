@@ -1,0 +1,23 @@
+{
+  "name": "geog576final",
+  "version": "1.0.0",
+  "description": "TravelLog for GEOG576 Final Project",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jusphonia1224/GEOG576Final.git"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "author": "Jusphonia Ho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jusphonia1224/GEOG576Final/issues"
+  },
+  "homepage": "https://github.com/jusphonia1224/GEOG576Final#readme"
+}
