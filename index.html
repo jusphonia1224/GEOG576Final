@@ -59,8 +59,9 @@
             "esri/layers/GraphicsLayer",
             "esri/widgets/Legend",
             "esri/widgets/LayerList",
-            "esri/widgets/Expand"
-        ], (esriConfig, Map, MapView, Locate, Search, FeatureLayer, Graphic, GraphicsLayer, Legend, LayerList, Expand) => {
+            "esri/widgets/Expand",
+            "esri/symbols/LineSymbolMarker"
+        ], (esriConfig, Map, MapView, Locate, Search, FeatureLayer, Graphic, GraphicsLayer, Legend, LayerList, Expand, LineSymbolMarker) => {
             esriConfig.apiKey = "AAPK1bafb1fd1b984000a2a5ab965ed0cf111GDugMmnipDNIQH9yaN93addT3iTZzAKwGLSLBZvZJBkFTaRPkJjvEi2gCoqyJml";
 
             const map = new Map({
@@ -77,8 +78,9 @@
             //const graphicsLayer = new GraphicsLayer();
             //map.add(graphicsLayer);
 
+            // ----- Settings for layer - Transportation related -----
             // Defining popup properties
-            const popupTemplate = {
+            const transportationTemplate = {
                 "title": "{Name}",
                 "content": "<b>Type:</b> {Type} - {Subtype1}{Subtype2}{Subtype3}{Subtype4}<br> \
                             <b>Location:</b> {Address}<br> \
@@ -88,7 +90,6 @@
                             <b>Remarks:</b> {Remarks}<br> "
             }
 
-            // ----- Settings for layer - Agency related -----
             const transportationLayer = new FeatureLayer({
                 url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_a1b96a7fac07465faf3ce60fb3fa52b0_results/FeatureServer",
                 renderer: {
@@ -99,14 +100,74 @@
                             value: "Flight", 
                             symbol: {
                                 "type": "simple-line",
-                                //"url": "https://jusphonia1224.github.io/TravelLog/logo/icons8-plane-24.png",
                                 "color": "black",
                                 "width": "2px",
                                 "height": "2px",
-                                marker: { // autocasts from LineSymbolMarker
-                                    //"style": "arrow",
-                                    url: "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
-                                    placement: "begin-end"
+                                "marker": { // autocasts from LineSymbolMarker
+                                    "type": "line-marker",
+                                    //"style": "x",
+                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
+                                    "placement": "begin-end"
+                                }
+                            }
+                        },
+                        {
+                            value: "Bus", 
+                            symbol: {
+                                "type": "simple-line",
+                                "color": "orange",
+                                "width": "2px",
+                                "height": "2px",
+                                "marker": { // autocasts from LineSymbolMarker
+                                    "type": "line-marker",
+                                    //"style": "x",
+                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
+                                    "placement": "begin-end"
+                                }
+                            }
+                        },
+                        {
+                            value: "Subway", 
+                            symbol: {
+                                "type": "simple-line",
+                                "color": "green",
+                                "width": "2px",
+                                "height": "2px",
+                                "marker": { // autocasts from LineSymbolMarker
+                                    "type": "line-marker",
+                                    //"style": "x",
+                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
+                                    "placement": "begin-end"
+                                }
+                            }
+                        },
+                        {
+                            value: "Car", 
+                            symbol: {
+                                "type": "simple-line",
+                                "color": "yellow",
+                                "width": "2px",
+                                "height": "2px",
+                                "marker": { // autocasts from LineSymbolMarker
+                                    "type": "line-marker",
+                                    //"style": "x",
+                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
+                                    "placement": "begin-end"
+                                }
+                            }
+                        },
+                        {
+                            value: "Ship", 
+                            symbol: {
+                                "type": "simple-line",
+                                "color": "red",
+                                "width": "2px",
+                                "height": "2px",
+                                "marker": { // autocasts from LineSymbolMarker
+                                    "type": "line-marker",
+                                    //"style": "x",
+                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
+                                    "placement": "begin-end"
                                 }
                             }
                         }
@@ -114,12 +175,78 @@
                 }, 
                 //definitionExpression: "transportation_type = 'Flight' ",
                 outFields: ["route_number"],
-                popupTemplate: popupTemplate
+                popupTemplate: transportationTemplate
             });
 
             transportationLayer_titleForLegend = transportationLayer.title = transportationLayer.name = 'Transportation';
 
             map.add(transportationLayer);
+
+            // ----- Settings for layer - Shops related -----
+             // Defining popup properties
+             const shopsTemplate = {
+                "title": "{shop_name}",
+                "content": "<b>Trip:</b> {trip_name}<br> \
+                            <b>Type:</b> {shops_type}<br> \
+                            <b>From:</b> {datetime_from}<br> \
+                            <b>To:</b> {datetime_to}<br> \
+                            <b>Website:</b> {website}<br> \
+                            <b>Remarks:</b> {remarks}<br> "
+            }
+ 
+            const shopsLayer = new FeatureLayer({
+                url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_8be72751984c46af8c126ebb086e8a48_results/FeatureServer",
+                renderer: {
+                    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                    field: "shops_type",  // contains values referenced in uniqueValueInfos
+                    uniqueValueInfos: [
+                        {
+                            value: "Shops", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/logo/souvenir-shop.png",
+                                "width": "20px",
+                                "height": "20px"
+                            }
+                        },
+                        {
+                            value: "Shopping Mall", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/logo/shopping-mall.png",
+                                "width": "20px",
+                                "height": "20px"
+                            }
+                        },
+                        {
+                            value: "Restaurants / Cafe", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/logo/cafe.png",
+                                "width": "20px",
+                                "height": "20px"
+                            }
+                        },
+                        {
+                            value: "Bookstores", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/logo/bookstore.png",
+                                "width": "20px",
+                                "height": "20px"
+                            }
+                        }
+                    ]
+                }, 
+                //definitionExpression: "transportation_type = 'Flight' ",
+                outFields: ["shop_name", "trip_name", "shops_type", "datetime_from", "datetime_to", "website", "remarks"],
+                popupTemplate: shopsTemplate
+            });
+
+            shopsLayer_titleForLegend = shopsLayer.title = shopsLayer.name = 'Shops';
+
+            map.add(shopsLayer);
+
 
             // Add the locate widget to the top left corner of the view
             const locateBtn = new Locate({
