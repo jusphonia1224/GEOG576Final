@@ -81,13 +81,13 @@
             // ----- Settings for layer - Transportation related -----
             // Defining popup properties
             const transportationTemplate = {
-                "title": "{Name}",
-                "content": "<b>Type:</b> {Type} - {Subtype1}{Subtype2}{Subtype3}{Subtype4}<br> \
-                            <b>Location:</b> {Address}<br> \
-                            <b>Description:</b> {Description}<br> \
-                            <b>Record Date:</b> {RecordDate}<br> \
-                            <b>Reference:</b> {Reference}<br> \
-                            <b>Remarks:</b> {Remarks}<br> "
+                "title": "{route_number}",
+                "content": "<b>Trip:</b> {trip_name}<br> \
+                            <b>Type:</b> {transportation_type}<br> \
+                            <b>From:</b> {datetime_from}<br> \
+                            <b>To:</b> {datetime_to}<br> \
+                            <b>Website:</b> {website}<br> \
+                            <b>Remarks:</b> {remarks}<br> "
             }
 
             const transportationLayer = new FeatureLayer({
@@ -166,7 +166,7 @@
                     ]
                 }, 
                 //definitionExpression: "transportation_type = 'Flight' ",
-                outFields: ["route_number"],
+                outFields: ["route_number", "transportation_type", "datetime_from", "datetime_to", "website", "remarks"],
                 popupTemplate: transportationTemplate
             });
 
