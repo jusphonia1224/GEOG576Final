@@ -81,7 +81,7 @@
             // ----- Settings for layer - Transportation related -----
             // Defining popup properties
             const transportationTemplate = {
-                "title": "{route_number}",
+                "title": "{route_number} - {lcation_from} to {location_to}",
                 "content": "<b>Trip:</b> {trip_name}<br> \
                             <b>Type:</b> {transportation_type}<br> \
                             <b>From:</b> {datetime_from}<br> \
@@ -166,7 +166,7 @@
                     ]
                 }, 
                 //definitionExpression: "transportation_type = 'Flight' ",
-                outFields: ["route_number", "transportation_type", "datetime_from", "datetime_to", "website", "remarks"],
+                outFields: ["route_number", "transportation_type", "datetime_from", "datetime_to", "website", "remarks", "location_from", "location_to"],
                 popupTemplate: transportationTemplate
             });
 
