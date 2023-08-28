@@ -120,8 +120,6 @@
                                 "height": "2px",
                                 "marker": { // autocasts from LineSymbolMarker
                                     "type": "line-marker",
-                                    //"style": "x",
-                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
                                     "placement": "begin-end"
                                 }
                             }
@@ -135,8 +133,6 @@
                                 "height": "2px",
                                 "marker": { // autocasts from LineSymbolMarker
                                     "type": "line-marker",
-                                    //"style": "x",
-                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
                                     "placement": "begin-end"
                                 }
                             }
@@ -150,8 +146,6 @@
                                 "height": "2px",
                                 "marker": { // autocasts from LineSymbolMarker
                                     "type": "line-marker",
-                                    //"style": "x",
-                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
                                     "placement": "begin-end"
                                 }
                             }
@@ -165,8 +159,6 @@
                                 "height": "2px",
                                 "marker": { // autocasts from LineSymbolMarker
                                     "type": "line-marker",
-                                    //"style": "x",
-                                    //"style": "https://jusphonia1224.github.io/GEOG576Final/logo/icons8-plane-24.png",
                                     "placement": "begin-end"
                                 }
                             }
@@ -204,7 +196,7 @@
                             value: "Shops", 
                             symbol: {
                                 "type": "picture-marker",
-                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/souvenir-shop.png",
+                                "url": "logo/souvenir-shop.png",
                                 "width": "24px",
                                 "height": "24px"
                             }
@@ -213,7 +205,7 @@
                             value: "Shopping Mall", 
                             symbol: {
                                 "type": "picture-marker",
-                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/shopping-mall.png",
+                                "url": "logo/shopping-mall.png",
                                 "width": "24px",
                                 "height": "24px"
                             }
@@ -222,7 +214,7 @@
                             value: "Restaurants / Cafe", 
                             symbol: {
                                 "type": "picture-marker",
-                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/cafe.png",
+                                "url": "logo/cafe.png",
                                 "width": "24px",
                                 "height": "24px"
                             }
@@ -231,7 +223,7 @@
                             value: "Bookstores", 
                             symbol: {
                                 "type": "picture-marker",
-                                "url": "https://jusphonia1224.github.io/GEOG576Final/logo/bookstore.png",
+                                "url": "logo/bookstore.png",
                                 "width": "24px",
                                 "height": "24px"
                             }
@@ -246,6 +238,71 @@
             shopsLayer_titleForLegend = shopsLayer.title = shopsLayer.name = 'Shops';
 
             map.add(shopsLayer);
+
+            // ----- Settings for layer - Events related -----
+             // Defining popup properties
+             const eventsTemplate = {
+                "title": "{event_name}",
+                "content": "<b>Trip:</b> {trip_name}<br> \
+                            <b>Type:</b> {events_type}<br> \
+                            <b>From:</b> {datetime_from}<br> \
+                            <b>To:</b> {datetime_to}<br> \
+                            <b>Website:</b> {website}<br> \
+                            <b>Remarks:</b> {remarks}<br> "
+            }
+ 
+            const eventsLayer = new FeatureLayer({
+                url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_8be72751984c46af8c126ebb086e8a48_results/FeatureServer",
+                renderer: {
+                    type: "unique-value",  // autocasts as new UniqueValueRenderer()
+                    field: "events_type",  // contains values referenced in uniqueValueInfos
+                    uniqueValueInfos: [
+                        {
+                            value: "School Events", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "logo/school_events.png",
+                                "width": "24px",
+                                "height": "24px"
+                            }
+                        },
+                        {
+                            value: "Conference", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "logo/conference.png",
+                                "width": "24px",
+                                "height": "24px"
+                            }
+                        },
+                        {
+                            value: "Concerts", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "logo/music-concert.png",
+                                "width": "24px",
+                                "height": "24px"
+                            }
+                        },
+                        {
+                            value: "events_type_other", 
+                            symbol: {
+                                "type": "picture-marker",
+                                "url": "logo/event-schedule.png",
+                                "width": "24px",
+                                "height": "24px"
+                            }
+                        }
+                    ]
+                }, 
+                //definitionExpression: "transportation_type = 'Flight' ",
+                outFields: ["event_name", "trip_name", "events_type", "datetime_from", "datetime_to", "website", "remarks"],
+                popupTemplate: eventsTemplate
+            });
+
+            eventsLayer_titleForLegend = eventsLayer.title = eventsLayer.name = 'Events';
+
+            map.add(eventsLayer);
 
 
             // Add the locate widget to the top left corner of the view
